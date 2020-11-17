@@ -110,16 +110,16 @@ const App = () => {
     signIn: async(foundUser) => {
       // setUserToken('fgkj');
       // setIsLoading(false);
-      const userToken = String(foundUser[0].userToken);
-      const userName = foundUser[0].username;
-      
+      const userToken = String(foundUser.data.token);
+      const userId = foundUser.data.user.id;
+      // console.log(foundUser)
       try {
         await AsyncStorage.setItem('userToken', userToken);
       } catch(e) {
         console.log(e);
       }
       // console.log('user token: ', userToken);
-      dispatch({ type: 'LOGIN', id: userName, token: userToken });
+      dispatch({ type: 'LOGIN', id: userId, token: userToken });
     },
     signOut: async() => {
       // setUserToken(null);

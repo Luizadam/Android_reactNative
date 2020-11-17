@@ -9,20 +9,24 @@ import {
     Platform,
     StyleSheet,
     ScrollView,
+    Alert,
     StatusBar
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
+import axios from 'axios'
 
 const SignInScreen = ({navigation}) => {
 
     const [data, setData] = React.useState({
         username: '',
+        email:'',
         password: '',
-        confirm_password: '',
+        // confirm_password: '',
         check_textInputChange: false,
+        check_textEmailChange: false,
         secureTextEntry: true,
         confirm_secureTextEntry: true,
     });
@@ -50,12 +54,32 @@ const SignInScreen = ({navigation}) => {
         });
     }
 
-    const handleConfirmPasswordChange = (val) => {
-        setData({
+    const validate = (text) => {
+        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if (reg.test(text) === false) {
+          console.log("Email is Not Correct");
+          setData({
             ...data,
-            confirm_password: val
+            email: text,
+            check_textEmailChange: false
         });
-    }
+        }
+        else {
+            setData({
+                ...data,
+                email: text,
+                check_textEmailChange: true
+            });
+          console.log("Email is Correct");
+        }
+      }
+
+    // const handleConfirmPasswordChange = (val) => {
+    //     setData({
+    //         ...data,
+    //         confirm_password: val
+    //     });
+    // }
 
     const updateSecureTextEntry = () => {
         setData({
@@ -69,6 +93,32 @@ const SignInScreen = ({navigation}) => {
             ...data,
             confirm_secureTextEntry: !data.confirm_secureTextEntry
         });
+    }
+
+    const registHandle = (userName,email,password) =>{
+        if(data.username == '' || data.email == '' || data.password == ''){
+            Alert.alert('Wrong Input!', 'Username or password field cannot be empty.', [
+                {text: 'Okay'}
+            ]);
+            return;
+        }else{
+            const req = {
+                "fullname":userName,
+                "email": email,
+                "password": password
+            }
+            axios.post("http://10.0.2.2:3001/register",req).then(res =>{
+                console.log(res)
+                // signIn(res);
+            })
+            
+            .catch(error => {
+                    Alert.alert('Please Make sure your data and Try Again.', [
+                        {text: 'Okay'}
+                    ]);
+                    return;
+            });
+        }
     }
 
     return (
@@ -96,6 +146,31 @@ const SignInScreen = ({navigation}) => {
                     onChangeText={(val) => textInputChange(val)}
                 />
                 {data.check_textInputChange ? 
+                <Animatable.View
+                    animation="bounceIn"
+                >
+                    <Feather 
+                        name="check-circle"
+                        color="green"
+                        size={20}
+                    />
+                </Animatable.View>
+                : null}
+            </View>
+
+            <Text style={[styles.text_footer,{marginTop:35}]}>Email</Text>
+            <View style={styles.action}>
+                <FontAwesome 
+                    name="user-o"
+                    color="#05375a"
+                    size={20}
+                />
+                <TextInput
+                placeholder="Your Email"
+                style={styles.textInput}
+                onChangeText={(text) => validate(text)}
+                />
+                {data.check_textEmailChange ? 
                 <Animatable.View
                     animation="bounceIn"
                 >
@@ -157,7 +232,7 @@ const SignInScreen = ({navigation}) => {
                     secureTextEntry={data.confirm_secureTextEntry ? true : false}
                     style={styles.textInput}
                     autoCapitalize="none"
-                    onChangeText={(val) => handleConfirmPasswordChange(val)}
+                    // onChangeText={(val) => handleConfirmPasswordChange(val)}
                 />
                 <TouchableOpacity
                     onPress={updateConfirmSecureTextEntry}
@@ -188,7 +263,7 @@ const SignInScreen = ({navigation}) => {
             <View style={styles.button}>
                 <TouchableOpacity
                     style={styles.signIn}
-                    onPress={() => {}}
+                    onPress={() => {registHandle(data.username,data.email,data.password)}}
                 >
                 <LinearGradient
                     colors={['#08d4c4', '#01ab9d']}
