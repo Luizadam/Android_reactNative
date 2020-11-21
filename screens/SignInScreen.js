@@ -108,19 +108,14 @@ const SignInScreen = ({navigation}) => {
                     ]);
                     return;
             });
-        }
-        
-
-        
-        
-        
+        } 
     }
 
     return (
       <View style={styles.container}>
           <StatusBar backgroundColor='#009387' barStyle="light-content"/>
         <View style={styles.header}>
-            <Text style={styles.text_header}>Wel</Text>
+            <Text style={styles.text_header}>Welcome</Text>
         </View>
         <Animatable.View 
             animation="fadeInUpBig"
