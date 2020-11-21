@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet, StatusBar,Modal ,
-  TouchableHighlight} from 'react-native';
+  TouchableHighlight,ScrollView} from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import axios from 'axios'
 import { ListItem, Avatar,Input } from 'react-native-elements'
 import { TouchableOpacity } from 'react-native';
+import { Icon } from 'react-native-elements'
 
 const HomeScreen = ({navigation}) => {
   const [dataUser,setData] = useState([])
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalDelete, setModalDelete] = useState(false);
   const [title,setTitle] = useState("")
   const [desc,setDesc] = useState("")
+  const [selectedUser,setSelected] = useState({})
+  const [selectedUserDelete,setSelectedDelete] = useState({})
+  const [button,setButton] = useState("simpan")
+
 
   const theme = useTheme();
   useEffect(()=>{
@@ -27,29 +33,87 @@ const submit = () =>{
     title:title,
     desc:desc
   }
-  axios.post('http://10.0.2.2:3001/data/posting',data).then(res =>{
-    setModalVisible(!modalVisible)
-    setDesc("")
-    setTitle("")
+  console.log(button)
+  if (button === 'simpan'){
+    axios.post('http://10.0.2.2:3001/data/posting',data).then(res =>{
+      setModalVisible(!modalVisible)
+      setDesc("")
+      setTitle("")
+    })
+  }else if (button === 'update'){
+    axios.put(`http://10.0.2.2:3001/data/posting/${selectedUser._id}`,data).then(res =>{
+      setModalVisible(!modalVisible)
+      setDesc("")
+      setTitle("")  
+      setButton("simpan")
   })
+  }
+
   
+}
+
+const selectedItem = (event) => {
+  
+  setSelected(event)
+  console.log(selectedUser)
+  setDesc(event.desc)
+  setTitle(event.title)
+  setModalVisible(true)
+  setButton("update")
+  
+}
+
+const selectedItemDelete = (event) => {
+  setSelectedDelete(event)
+  setModalDelete(true)
+}
+
+const cancel = () =>{
+  setModalVisible(!modalVisible)
+  setDesc("")
+  setTitle("")  
+  setButton("simpan")
+}
+
+const deletedData = () =>{
+  axios.delete(`http://10.0.2.2:3001/data/posting/${selectedUserDelete._id}`).then(res =>{
+    setModalDelete(!modalDelete)
+  })
 }
   
     return (
+      
       <View style={styles.container}>
         <StatusBar barStyle= { theme.dark ? "light-content" : "dark-content" }/>
+        <ScrollView>
         {
           dataUser.map(user =>{
             return (
               <ListItem key={user._id} bottomDivider>
+                
                   <ListItem.Content>
                     <ListItem.Title>{user.title}</ListItem.Title>
                     <ListItem.Subtitle>{user.desc}</ListItem.Subtitle>
                   </ListItem.Content>
+                  <Icon
+                      raised
+                      name='trash'
+                      type='font-awesome'
+                      color='#f50'
+                      size={15}
+                      onPress={() => selectedItemDelete(user)} />
+                  <Icon
+                      raised
+                      name='pencil'
+                      type='font-awesome'
+                      color='#f50'
+                      size={15}
+                      onPress={() => selectedItem(user)} />
                 </ListItem>
             );
           })
         }
+        </ScrollView>
       <TouchableOpacity style={styles.addButon} onPress={() => {
           setModalVisible(true);
         }}>
@@ -87,7 +151,7 @@ const submit = () =>{
             </TouchableHighlight>
             <TouchableHighlight
               style={{ ...styles.saveButton, backgroundColor: "#4CDAAD" }}
-              onPress={() => setModalVisible(!modalVisible)}
+              onPress={cancel}
             >
               <Text style={styles.textStyle}>Cancel</Text>
             </TouchableHighlight>
@@ -95,6 +159,32 @@ const submit = () =>{
         </View>
       </Modal>
 
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalDelete}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+      <Text style={styles.modalText}>apakah anda yakin ingin menghapus data "{selectedUserDelete.title}"</Text>
+            <TouchableHighlight
+              style={{ ...styles.saveButton, backgroundColor: "#4CDAAD" }}
+              onPress={deletedData}
+            >
+              <Text style={styles.textStyle}>Iya</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={{ ...styles.saveButton, backgroundColor: "#4CDAAD" }}
+              onPress={() => setModalDelete(!modalDelete)}
+            >
+              <Text style={styles.textStyle}>Tidak</Text>
+            </TouchableHighlight>
+          </View>
+        </View>
+      </Modal>
     </View>
       </View>
     );
