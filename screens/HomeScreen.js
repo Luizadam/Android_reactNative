@@ -6,6 +6,7 @@ import axios from 'axios'
 import { ListItem, Avatar,Input } from 'react-native-elements'
 import { TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements'
+import ImagePicker from 'react-native-image-crop-picker'
 
 const HomeScreen = ({navigation}) => {
   const [dataUser,setData] = useState([])
@@ -16,6 +17,7 @@ const HomeScreen = ({navigation}) => {
   const [selectedUser,setSelected] = useState({})
   const [selectedUserDelete,setSelectedDelete] = useState({})
   const [button,setButton] = useState("simpan")
+  const [image ,setImage] = useState('')
 
 
   const theme = useTheme();
@@ -80,6 +82,29 @@ const deletedData = () =>{
     setModalDelete(!modalDelete)
   })
 }
+
+// add photo in todos 
+
+const takePhoto = () =>{
+  ImagePicker.openCamera({
+    width: 300,
+    height: 400,
+    cropping: true,
+  }).then(image => {
+    console.log(image);
+    setImage(image.path)
+  });
+}
+
+const choosePhoto = () =>{
+  ImagePicker.openPicker({
+    width: 300,
+    height: 400,
+    cropping: true,
+  }).then(image => {
+    console.log(image);
+  });
+}
   
     return (
       
@@ -90,7 +115,7 @@ const deletedData = () =>{
           dataUser.map(user =>{
             return (
               <ListItem key={user._id} bottomDivider>
-                
+                <Avatar source={{uri: image}} />
                   <ListItem.Content>
                     <ListItem.Title>{user.title}</ListItem.Title>
                     <ListItem.Subtitle>{user.desc}</ListItem.Subtitle>
@@ -131,6 +156,20 @@ const deletedData = () =>{
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>Add Todos</Text>
+            <View style={{flexDirection:'row',justifyContent:"space-between"}}>
+            <TouchableHighlight
+              style={{ ...styles.pictureButton, backgroundColor: "#E5D457",marginRight:10 }}
+              onPress={takePhoto}
+            >
+              <Text style={styles.textStyle}>Take a Picture </Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={{ ...styles.pictureButton, backgroundColor: "#E5D457" }}
+              onPress={choosePhoto}
+            >
+              <Text style={styles.textStyle}>Choose Photo </Text>
+            </TouchableHighlight>
+            </View>
             <Input
               placeholder='Title'
               containerStyle={styles.inputTitle}
@@ -143,8 +182,9 @@ const deletedData = () =>{
               value={desc}
               onChangeText = {(value) => setDesc(value)}
             />
+            <View style={{flexDirection:'row',justifyContent:"space-between"}}>
             <TouchableHighlight
-              style={{ ...styles.saveButton, backgroundColor: "#4CDAAD" }}
+              style={{ ...styles.saveButton, backgroundColor: "#4CDAAD",marginRight:10 }}
               onPress={submit}
             >
               <Text style={styles.textStyle}>Save</Text>
@@ -155,6 +195,7 @@ const deletedData = () =>{
             >
               <Text style={styles.textStyle}>Cancel</Text>
             </TouchableHighlight>
+            </View>
           </View>
         </View>
       </Modal>
@@ -254,5 +295,14 @@ const styles = StyleSheet.create({
     justifyContent:"center",
     borderRadius:10,
     marginTop:20
+  },
+  pictureButton:{
+    height:30,
+    width:100,
+    alignItems:"center",
+    justifyContent:"center",
+    borderRadius:10,
+    marginTop:20,
+    marginBottom:10
   }
 });
