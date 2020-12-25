@@ -8,6 +8,7 @@ import {
   Modal,
   TouchableHighlight,
   ScrollView,
+  KeyboardAvoidingViewComponent,
 } from 'react-native';
 import {useTheme} from '@react-navigation/native';
 import axios from 'axios';
@@ -130,6 +131,10 @@ const HomeScreen = ({navigation}) => {
     });
   };
 
+  const submitKomen = (ev) =>{
+    console.log(ev._id)
+  }
+
   const cancel = () => {
     setModalVisible(!modalVisible);
     setDesc('');
@@ -236,13 +241,11 @@ const HomeScreen = ({navigation}) => {
                     onPress={() => unlike(user)}
                   />
                 </View>
-                <View style={{flex:1}}>
-                <TextInput>Like : {user.likes.length}</TextInput>
-                
+                <View style={{flex: 1}}>
+                  <TextInput>Like : {user.likes.length}</TextInput>
                 </View>
-                <View style={{flex:2}}>
-                <TextInput>Coment : {user.likes.length}</TextInput>
-                
+                <View style={{flex: 2}}>
+                  <TextInput>Coment : {user.comments.length}</TextInput>
                 </View>
                 <View style={{flex: 1}}>
                   <Icon
@@ -255,6 +258,35 @@ const HomeScreen = ({navigation}) => {
                   />
                 </View>
               </View>
+              <View
+                style={{
+                  borderBottomColor: 'black',
+                  borderBottomWidth: 1,
+                  opacity:0.3,
+                  marginTop:5
+                }}
+              />
+              {user.comments.map(data => {
+                return (
+                  <View key={data.id} style={{marginTop: 12}}>
+                    <Text h4>{data.postedByName}</Text>
+                    <TextInput style={{marginTop: -10}}>{data.text}</TextInput>
+                    <View style={{flexDirection:'row'}}>
+                    <Input
+                        placeholder="Comment"
+                        containerStyle={styles.inputKomen}
+                        value={title}
+                        onChangeText={value => setTitle(value)}
+                      />
+                      <TouchableHighlight
+                        style={{...styles.submitKomen, backgroundColor: '#4CDAAD'}}
+                        onPress={() => submitKomen()}>
+                        <Text style={styles.textStyle}>Submit</Text>
+                      </TouchableHighlight>
+                    </View>
+                  </View>
+                );
+              })}
               {/* </Card.Image> */}
             </Card>
           );
@@ -413,6 +445,10 @@ const styles = StyleSheet.create({
     width: 200,
     height: 50,
   },
+  inputKomen: {
+    width: 250,
+    height: 80,
+  },
   saveButton: {
     height: 30,
     width: 80,
@@ -420,6 +456,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 10,
     marginTop: 20,
+  },
+  submitKomen:{
+    height: 30,
+    width: 80,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+    marginTop: 20
   },
   pictureButton: {
     height: 30,

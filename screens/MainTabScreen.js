@@ -11,7 +11,7 @@ import ExploreScreen from './ExploreScreen';
 import ProfileScreen from './ProfileScreen';
 
 const HomeStack = createStackNavigator();
-const DetailsStack = createStackNavigator();
+const ProfileStack = createStackNavigator();
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -19,6 +19,8 @@ const MainTabScreen = () => (
     <Tab.Navigator
       initialRouteName="Home"
       activeColor="#fff"
+      backgroundColor="#009387"
+      style={{backgroundColor:'#009387'}}
     >
       <Tab.Screen
         name="Home"
@@ -31,7 +33,7 @@ const MainTabScreen = () => (
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Notifications"
         component={DetailsStackScreen}
         options={{
@@ -41,19 +43,19 @@ const MainTabScreen = () => (
             <Icon name="ios-notifications" color={color} size={26} />
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={ProfileStackScreen}
         options={{
           tabBarLabel: 'Profile',
-          tabBarColor: '#694fad',
+          tabBarColor: '#009387',
           tabBarIcon: ({ color }) => (
             <Icon name="ios-person" color={color} size={26} />
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Explore"
         component={ExploreScreen}
         options={{
@@ -63,7 +65,7 @@ const MainTabScreen = () => (
             <Icon name="ios-aperture" color={color} size={26} />
           ),
         }}
-      />
+      /> */}
     </Tab.Navigator>
 );
 
@@ -80,7 +82,7 @@ const HomeStackScreen = ({navigation}) => (
         }
     }}>
         <HomeStack.Screen name="Home" component={HomeScreen} options={{
-        title:'Overview',
+        title:'Feed',
         headerLeft: () => (
             <Icon.Button name="ios-menu" size={25} backgroundColor="#009387" onPress={() => navigation.openDrawer()}></Icon.Button>
         )
@@ -88,8 +90,8 @@ const HomeStackScreen = ({navigation}) => (
 </HomeStack.Navigator>
 );
 
-const DetailsStackScreen = ({navigation}) => (
-<DetailsStack.Navigator screenOptions={{
+const ProfileStackScreen = ({navigation}) => (
+<ProfileStack.Navigator screenOptions={{
         headerStyle: {
         backgroundColor: '#1f65ff',
         },
@@ -98,11 +100,11 @@ const DetailsStackScreen = ({navigation}) => (
         fontWeight: 'bold'
         }
     }}>
-        <DetailsStack.Screen name="Details" component={DetailsScreen} options={{
+        <ProfileStack.Screen name="Profile" component={ProfileScreen} options={{
         headerLeft: () => (
             <Icon.Button name="ios-menu" size={25} backgroundColor="#1f65ff" onPress={() => navigation.openDrawer()}></Icon.Button>
         )
         }} />
-</DetailsStack.Navigator>
+</ProfileStack.Navigator>
 );
   

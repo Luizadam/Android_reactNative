@@ -79,7 +79,7 @@ export function DrawerContent(props) {
                             label="Profile"
                             onPress={() => {props.navigation.navigate('Profile')}}
                         />
-                        <DrawerItem 
+                        {/* <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
                                 name="bookmark-outline" 
@@ -89,8 +89,8 @@ export function DrawerContent(props) {
                             )}
                             label="Bookmarks"
                             onPress={() => {props.navigation.navigate('BookmarkScreen')}}
-                        />
-                        <DrawerItem 
+                        /> */}
+                        {/* <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
                                 name="settings-outline" 
@@ -100,8 +100,8 @@ export function DrawerContent(props) {
                             )}
                             label="Settings"
                             onPress={() => {props.navigation.navigate('SettingsScreen')}}
-                        />
-                        <DrawerItem 
+                        /> */}
+                        {/* <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
                                 name="account-check-outline" 
@@ -111,7 +111,7 @@ export function DrawerContent(props) {
                             )}
                             label="Support"
                             onPress={() => {props.navigation.navigate('SupportScreen')}}
-                        />
+                        /> */}
                     </Drawer.Section>
                     <Drawer.Section title="Preferences">
                         <TouchableRipple onPress={() => {toggleTheme()}}>
