@@ -115,6 +115,7 @@ const App = () => {
       // console.log(foundUser)
       try {
         await AsyncStorage.setItem('userToken', userToken);
+        await AsyncStorage.setItem('userId', userId);
       } catch(e) {
         console.log(e);
       }

@@ -88,6 +88,7 @@ const SignInScreen = ({navigation}) => {
     }
 
     const loginHandle = (userName, password) => {
+        // console.warn(userName,password)
         if ( data.email.length == 0 || data.password.length == 0 ) {
             Alert.alert('Wrong Input!', 'Username or password field cannot be empty.', [
                 {text: 'Okay'}
@@ -100,6 +101,8 @@ const SignInScreen = ({navigation}) => {
             }
             axios.post("http://10.0.2.2:3001/login",req).then(res =>{
                 signIn(res);
+                // console.log(req)
+                // console.log(res)
             })
             
             .catch(error => {
