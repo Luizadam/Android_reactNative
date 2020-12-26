@@ -21,6 +21,7 @@ const MainTabScreen = () => (
       activeColor="#fff"
       backgroundColor="#009387"
       style={{backgroundColor:'#009387'}}
+      barStyle={{ backgroundColor: '#009387' }}
     >
       <Tab.Screen
         name="Home"
@@ -93,7 +94,7 @@ const HomeStackScreen = ({navigation}) => (
 const ProfileStackScreen = ({navigation}) => (
 <ProfileStack.Navigator screenOptions={{
         headerStyle: {
-        backgroundColor: '#1f65ff',
+        backgroundColor: '#009387',
         },
         headerTintColor: '#fff',
         headerTitleStyle: {
@@ -102,7 +103,7 @@ const ProfileStackScreen = ({navigation}) => (
     }}>
         <ProfileStack.Screen name="Profile" component={ProfileScreen} options={{
         headerLeft: () => (
-            <Icon.Button name="ios-menu" size={25} backgroundColor="#1f65ff" onPress={() => navigation.openDrawer()}></Icon.Button>
+            <Icon.Button name="ios-menu" size={25} backgroundColor="#009387" onPress={() => navigation.openDrawer()}></Icon.Button>
         )
         }} />
 </ProfileStack.Navigator>

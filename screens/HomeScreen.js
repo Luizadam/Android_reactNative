@@ -131,9 +131,9 @@ const HomeScreen = ({navigation}) => {
     });
   };
 
-  const submitKomen = (ev) =>{
-    console.log(ev._id)
-  }
+  const submitKomen = ev => {
+    console.log(ev._id);
+  };
 
   const cancel = () => {
     setModalVisible(!modalVisible);
@@ -215,7 +215,7 @@ const HomeScreen = ({navigation}) => {
             //         onPress={() => selectedItem(user)} />
 
             //   </ListItem>
-            <Card key={user._id}>
+            <Card key={user._id} style={styles.card}>
               <Card.Title>{user.title}</Card.Title>
               <Card.Divider />
               {/* <Card.Image source={require('../assets/logo.png')}> */}
@@ -262,31 +262,34 @@ const HomeScreen = ({navigation}) => {
                 style={{
                   borderBottomColor: 'black',
                   borderBottomWidth: 1,
-                  opacity:0.3,
-                  marginTop:5
+                  opacity: 0.3,
+                  marginTop: 5,
                 }}
               />
-              {user.comments.map(data => {
+              {/* {user.comments.map(data => {
                 return (
                   <View key={data.id} style={{marginTop: 12}}>
                     <Text h4>{data.postedByName}</Text>
                     <TextInput style={{marginTop: -10}}>{data.text}</TextInput>
-                    <View style={{flexDirection:'row'}}>
-                    <Input
+                    <View style={{flexDirection: 'row'}}>
+                      <Input
                         placeholder="Comment"
                         containerStyle={styles.inputKomen}
                         value={title}
                         onChangeText={value => setTitle(value)}
                       />
                       <TouchableHighlight
-                        style={{...styles.submitKomen, backgroundColor: '#4CDAAD'}}
+                        style={{
+                          ...styles.submitKomen,
+                          backgroundColor: '#4CDAAD',
+                        }}
                         onPress={() => submitKomen()}>
                         <Text style={styles.textStyle}>Submit</Text>
                       </TouchableHighlight>
                     </View>
                   </View>
                 );
-              })}
+              })} */}
               {/* </Card.Image> */}
             </Card>
           );
@@ -457,13 +460,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 20,
   },
-  submitKomen:{
+  submitKomen: {
     height: 30,
     width: 80,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 10,
-    marginTop: 20
+    marginTop: 20,
   },
   pictureButton: {
     height: 30,
@@ -476,5 +479,15 @@ const styles = StyleSheet.create({
   },
   post: {
     marginBottom: 4,
+  },
+  card: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+    elevation: 7,
   },
 });
